@@ -1,0 +1,968 @@
+// ****白天模式****
+// 背景
+.whitePage{background: $lightBg;}
+// 共用的背景
+.themePage{background: $lightBg;}
+.themeColor{background: $lightBg;}
+// 背景为蓝色
+.themeBlue{background: $blue;}
+// navbar
+.themeHead{
+    background: $blue;
+    .van-nav-bar{background: $blue;}
+}
+.navbar{
+    // 蓝色标题栏（白天模式）
+    .blue{
+        background: $blue;
+        .van-icon{
+            color: $lightBg;
+        }
+        .van-nav-bar__left{
+            .van-nav-bar__text{
+                color: $lightBg;
+            }
+        }
+        .van-nav-bar__right{
+            .van-nav-bar__text{
+                color: $lightBg;
+            }
+        }
+    }
+    // 白色标题栏(部分页面使用，白天模式)
+    .normal{
+        .van-icon{
+            color: $threeblack;
+        }
+        .van-nav-bar__text{
+            color: $threeblack;
+        }
+    }
+}
+
+// downbar
+.van-tabbar{
+    background:$lightBg;
+    .van-tabbar-item{
+        color: $nineblack;
+    }
+    .van-tabbar-item--active{
+        color: #478AFF;
+    }
+}
+// 按钮
+.themeBtn{
+    background: $blue;
+    color:$lightBg;
+    border: none;
+    border-radius: 1vw;
+}
+
+.themeColor{background:$lightBg;color:$sixblack;}
+// ****个人中心****
+.assetsHeader{background: $blue;color: $lightBg;}
+.usercenterList{
+    .van-cell-group{background:$lightBg;} 
+    .van-cell{
+        background: $lightBg;
+        border-bottom:1px solid $lightest;
+        .van-cell__title{
+            color: $threeblack;
+        }
+        .van-cell__value{
+            color: $nineblack;
+        }
+    }
+}
+.userWrapper{
+    &:before{background:$blue;}
+    .featuresBox{
+        background:$lightBg;
+    }
+}
+
+// ****安全中心****
+.normalCell{
+    .van-cell{background:$lightBg;border-bottom: 1px solid $lightest;
+        &:last-child{border-bottom:none;}
+        .van-cell__title{
+            color: $threeblack;
+        }
+        .van-cell__value{
+            color: $nineblack;
+        }
+    }
+}
+// ****我的邀请码****
+.inviteCode{
+    .yourCode{
+        color: $sixblack;
+    }
+    p{
+        color: $sixblack;  
+        background: #E6E6E6;
+    }
+}
+
+// ****支付账户****
+.payHead{ color:$threeblack;
+    .addAcount{
+        .van-icon{color:$threeblack;}
+    }
+}
+
+
+// ****提币地址****
+.addresslist{
+    li{border-bottom:1px solid $lightest;background: $lightBg;
+        .alTitle{
+            dl{flex:1;
+                dt{color:$threeblack;}
+                dd{color:#616973;}
+            }  
+            >i{color:#f44;}
+        }
+        .alContent{
+            .alDes{border-top: 1px solid #f5f5f5;color:#A2AEBF;
+            }
+        }
+    }
+}
+
+// ****站内信****
+.messageList{
+    ul{
+        li{border-bottom:1px solid $lightest;color:#A2AEBF;
+            &.unread{
+                p{color:$threeblack;}
+            }
+        }
+    }
+}
+
+// ****我的工单****
+.noWorklist{background: $lightBg;color: $nineblack}
+
+.worklistWrapper{
+    .worklistBox{
+        background: $lightBg;
+        .workHead{
+            border-bottom: 1px solid $lightest;
+            span{color: #A2AEBF;}
+        }
+        .workTitle{color:$threeblack;} 
+        .workReason{color: $sixblack;}
+        .responseBox{background: #F6F6F6;
+            p{color:$threeblack;
+                b{color:$threeblack;}
+            }
+        }
+    }
+}
+
+// 工单回复弹出框
+.popupInput{
+    .inputText{
+        border: 1px solid #D9D9D9;
+        input{
+            color:$threeblack;
+        }
+        input::-webkit-input-placeholder{color:#D9D9D9;}
+        i{color:#D9D9D9;}
+    }
+    span{color: #616973;}
+}
+
+
+// ****邮箱绑定等****
+.zcInfoWrapper{
+    &:before{background:$blue;}
+    .patmentInfo{
+        dl{color:$lightBg;}
+    }
+    >h3{color:$threeblack;}
+    .zcInfo{background: $lightBg;
+        .cell{background: #F5F5F5;
+            .cellLeft{
+                >span{color: $nineblack;}
+                >b{color: $threeblack;}
+            }
+            .van-icon{color:$threeblack;}
+        }
+        .payTypes{
+            .cellGroup{
+                .tbTitle{
+                    color: $threeblack;
+                }
+                .van-cell{
+                    border-bottom: 1px solid #f5f5f5;
+                    .van-field__control{color: $threeblack;}
+                    input::-webkit-input-placeholder{color: #d4d4d4;}
+                }
+                .van-cell-group{
+                    .van-cell__title{color: $threeblack;}
+                    .van-cell__value{color: $sixblack;}
+                    .van-cell__icon{color: $sixblack;}
+                }
+            }
+        }
+        .form{
+            .cellGroup{
+                border-bottom: 1px solid #f5f5f5;
+                .tbTitle{color: $threeblack;
+                    span{color: $nineblack;}
+                }
+                .van-field__control.sjAcount{
+                    color: $threeblack;
+                }
+                .van-cell{
+                    .van-field__control {color: $threeblack;}
+                    .van-field__control:disabled{color: $lighter;}
+                    input::-webkit-input-placeholder{color: #d4d4d4;}
+                }
+                .van-cell-group{
+                    .van-cell__title{color: $threeblack;}
+                    .van-cell__value{color: $sixblack;}
+                    .van-cell__icon{color: $sixblack;}
+                    .van-field__control{color: $threeblack;}
+                }
+                .van-button{background:$blue;}
+            }
+            .submitBox{
+                .van-button{color:$lightBg;background:$blue;}
+            }
+        }
+    }
+}
+
+// ****充币****
+.cb{
+    p{
+        color: $sixblack;  
+        background: #E6E6E6;
+    }
+    .acountAddr{
+        h3{color:$threeblack;}
+        .addr{color:$threeblack;}
+    }
+}
+
+// ****划转****
+.hz{ 
+    .payBox{
+        background: #F5F5F5;
+        .dot{
+            span{background: url('../../assets/img/dot.png') no-repeat center center;background-size: 100% 100%;}
+        }
+        .payGroup{
+            .cell{
+                .hzLeft{
+                    span{color:$nineblack;}
+                    b{color:$threelack;}
+                }
+            }
+            .line{background-color: #fff;}
+        }
+        .exchange{
+            span{background: url('../../assets/img/exchange.png') no-repeat center center;background-size: 100% 100%;} 
+        }
+    }
+    .cellGroup.hz{
+        .van-cell{
+            .van-field__control{color: #333;}
+        }
+    }
+    .transChoose{color: #999;}
+    .hzAcount{color: #999;}
+}
+// ****锁币****
+.sb{
+    dl{
+        dt{color:$unInput;}
+        dd{color:$threeblack;}
+    }
+    span{color:$blue;
+        i{color:$blue;}
+    }  
+}
+.noSb{
+    p{color:$threeblack;}
+}
+.lockCoinHandle{background:$lightBg;
+    dl{
+        dt{color:#616973;}
+        dd{color:$threeblack;}
+    }
+}
+
+// ****锁币历史记录****
+.lockCoinList{
+    li{
+        border-bottom: 1px solid $lightest;
+        p{
+            b{color:$threeblack;}
+        }
+        .listInfo{
+            dl{
+                dt{color:#A6A6A6;}
+                dd{color:$threeblack;}
+            }
+
+        }
+    }
+}
+
+.promptInfo{
+    color:$lighter;
+}
+
+// ****发起广告****
+.adver{
+    .form{
+        .checkBox{
+            .van-radio-group{
+                .van-radio__label{
+                    color: $threeblack;
+                }
+            }
+            .tbModle{color:$threeblack;}
+        }
+        .van-cell{
+            .van-cell__title{color:$threeblack;}
+            .van-cell__value{color: $sixblack;}
+            input::-webkit-input-placeholder{color:$unInput;} 
+        }
+        .otcBookDown{
+            .otcBookInput{
+                input::-webkit-input-placeholder{color: $unInput;}
+                input{color:$threeblack;background: $lightBg;}
+            }
+        }
+        .textArea{
+            p{color:$threeblack;}
+            textarea{color: $threeblack;border: 1px solid #ccc;}
+        }
+        .van-button{color:#fff;background: $blue;}
+        // ****上传二维码****
+        .photoBox{
+            p{color:$threeblack;}
+            .photoUpdate{
+                .van-uploader__input-wrapper{background: #F2F9FF;}
+            }
+        }
+    }
+}
+
+// ****OTC交易订单&&充值记录****
+.orderListBox{
+    li{
+        border-bottom: 1px solid $lightest;
+        .orderHead{
+            .orderHeadLeft{
+                span{
+                    &:last-child{color:$unInput;}
+                }
+                b{color:$threeblack;}
+        }
+        .orderHeadRight{
+            span{color:$unInput;}
+            .van-icon{color:$unInput;}
+            .rightHandle{color:$threeblack;}
+        }
+        }
+        .orderContent{
+            dl{
+                dt{color: $unInput;}
+                dd{color: $threeblack;}
+            }
+        }
+    }
+}
+
+
+// ****资产****
+.assetsWrapper{
+    &:before{background:$blue;}
+    .assetsBox{background:$lightBg;
+        .assetsTitle{color:#424242;}
+        h2{color: #3A3A3A;}
+        .result{color:$nineblack;}
+        .assetsHandle{
+            p{background:$blue;}
+        }
+    }
+    .accountBox{background: $lightBg;
+        .accountChoose{border-bottom: 1px solid $lightest;}
+        .assetsClac{
+            .calCTitle{color: $nineblack;}
+            p{
+                >b{color: $threeblack;}
+                >span{color: $sixblack;}
+            }
+        }
+    }
+    .assetsConetent{background: $lightBg;
+        .assetsInfo{
+            .check{border-bottom: 1px solid $lightest;color: $threeblack;}
+        }
+        .detailInfo{
+            .assetsList{
+                dl{
+                    dt{color: #a6a6a6;}
+                    dd{color:$threeblack;}
+                }
+            }
+        }
+    }
+}
+
+// ****首页****
+.homePage{background:$lightBg;}
+.homeMenus{background:$lightBg;}
+
+.noticeBarWrap{border-bottom:1px solid #f5f5f5;
+    .noticeBar{
+        .van-icon{color:$sixblack;}
+        .van-notice-bar{background:$lightBg;
+            .van-notice-bar__content{color:#616973;}
+        }
+    }
+}
+
+.quotation{
+    ul{
+        >li{
+        .symbol{color: $threeblack;}
+        .cny{color: #808080;}
+        }
+    }
+}
+
+.Menus{
+    .indexMenus{background: $lightBg;}
+    .gridBtn{
+            >i{color:$lightBg;}
+            p{color: $sixblack;}
+    }
+}
+
+.secondMenus{
+    .menusHeader{
+        .tab{border-bottom: 1px solid #f5f5f5; background: $lightBg;
+            li{color: $nineblack;}
+            .active{color:$blue;
+                span{background:$blue;}
+            }
+        }
+    }
+    .listTitle{color: #A6A6A6;}
+}
+
+.coinlist{
+    li{border-bottom: 1px solid #f5f5f5;
+        .clleft{
+            >p{
+                b{
+                    color: $threeblack;
+                }
+                .op5{color:#A6ACB1;}
+                span{color:$nineblack;}
+            }
+        }.clcenter{
+            >p{
+                b{color:$threeblack;}
+                .cur{color:$nineblack;}
+            }
+        }
+    }
+}
+
+// ****官方公告和新手指导****
+.articleList{
+    li{
+        border-bottom:1px solid #f5f5f5;
+        h3{color:$threeblack;}
+        .articleContent{color: $sixblack;}
+        .date{color:$nineblack;}
+    }
+}
+.article{
+    h1{color: $threeblack;}
+    .date{color:$nineblack;}
+    .content{color: $sixblack;}
+}
+
+// ****转盘我的奖品列表&&中奖名单****
+.prizeList{
+    li{border-bottom: 1px solid $lightest;
+        p{
+            color: #A2AEBF;
+        }
+        >span{
+            color: $threeblack;
+        }
+    }
+}
+.winTitle{
+    >span{
+        color: $sixblack;
+    }
+}
+.winContent{
+    li{border-bottom: 1px solid $lightest;
+        dl{
+            dd{color:$sixblack;}
+        }
+        b{color:$threeblack;}
+        span{color:#A2AEBF;}
+    }
+}
+
+// ****行情****
+.tradeListTitle{color:#A6A6A6}
+
+// ****行情侧边栏tab****
+.vanTab{
+    .van-tab{
+        color: #A2AEBF;
+        border-bottom: 1px solid $lightest;
+    }
+    .van-tab--active{
+        color:$blue;
+    }
+}
+
+// ****交易****
+.chooseTradeType{background:$lightBg;
+    i{color:$threeblack;}
+}
+.tradeHeaderWrap{background:$lightBg;
+    .tradeHeader{
+        &.fixed{background:$lightBg;}
+        .thLeft{
+            i{color:$threeblack;}
+            span{color:$threeblack;}
+        }
+        .thRight{ 
+            i{color:$threeblack;}
+        }
+    }
+}
+.tradeBox{background:$lightBg;
+    .tradeLeft{
+        .tradeBtn{
+            >div{background: #F1F7FF;}
+        }
+    }
+    .pt2{
+        .numberBox{background: $lightBg;border-color:$lightest;
+            .ion-ios-remove{border-right:1px solid $lightest;}
+            .ion-ios-add{border-left:1px solid $lightest;}
+            input::-webkit-input-placeholder{color:$unInput;}
+            input{color:$threeblack;}
+        }
+        .sumPrice{color: $nineblack;
+            &.sumLow{color:#C1CAD5;}
+            b{color:$threeblack;}
+        }
+    }
+}
+.tradeContent{background: $lightBg;}
+.tradeTitle{
+    border-bottom: 1px solid $lightBg;
+    b{color:$threeblack;}
+    span{color:#A2AEBF;}
+}
+.tradeSlider{
+    .van-slider{background: #e6e6e6;}
+    .vsliderNum{
+        span{color:$unInput;}
+    }
+    .customButton{
+        span{background: $threeblack;}
+    }
+    .tradeSliderDownI{
+        i{background:#e5e5e5;
+            &.active{background: $threeblack;}
+        }
+    }
+}
+// 左侧弹出框
+.drawPage{
+    .van-popup{background: $lightBg;} 
+}
+.drawHead{color:$threeblack;
+    .menusHeader{
+        .tab{border-bottom: 1px solid $lightest;}
+    }
+}
+.drawMenus{
+    .menusHeader{
+        .tab{border-bottom: 1px solid $lightest;}
+    }
+    .drawContent{
+        .drawUl{
+            li{border-bottom: 1px solid $lightest;
+                >b{color: $threeblack;}
+                >span{color: $threeblack;} 
+            }
+        }
+    }
+}
+
+// 当前委托列表
+.dropDownMenus{background: $lightBg;
+
+}
+.assetsList{
+    li{border-bottom:1px solid $lightest;
+        .assetsTopLeft{
+            span:first-child{color: $lightBg;}
+            b{color:$threeblack;}
+            span:last-child{color:#A2AEBF;}
+        }
+        .assetsTopRight{
+            span{color: #616973;}
+        }
+    }
+}
+.assetsDl{display: flex;
+    dl{
+        dt{color:#A2AEBF;}
+        dd{color:$threeblack;}
+    }
+    &.constactDl{
+        dd{color:$lighter;}
+    }
+}
+
+// ****秒合约下单历史****
+.ordersList{
+    li{border-bottom: 1px solid $lightest;
+        .orderTitle{
+            >div{display:flex;align-items:center;
+                b{color:$lightBg;}
+                span{
+                    &.orderTName{color:$threeblack;}
+                }
+            }
+            span{color:#A2AEBF;}
+        }
+    }
+}
+
+
+// ****注册登录模块****
+.signWrapper{
+    ul{
+        li{color: #A2AEBF;border-bottom:0.6667vw solid rgba(0,0,0,0);}
+        .active{color: $threeblack;border-bottom:0.6667vw solid $blue;}
+    }
+    .signForm{
+        .van-cell-group{background:$lightBg;}
+        .van-cell{color: #C1CAD5;border-bottom:1px solid $lightest;background:$lightBg;
+        .van-button{color:$blue;}
+        .van-field__label{color:$light;}
+        input::-webkit-input-placeholder{color:#C1CAD5;}
+        input{color:$threeblack;}
+        &:after{display:none;}
+        }
+        .pt8{
+            .van-button{
+                background: #C1CAD5;
+                color:#fff;
+            }
+            .active{
+                background: $blue;
+            }
+        }
+        >p{
+            color: $blue;
+            .forgetPsw{
+                color: #A2AEBF;
+            } 
+        }
+    }
+}
+
+// ****OTC****
+.otcTab.van-tabs--card{
+    .van-tabs__wrap{background: $lightBg;}
+    .van-tabs__nav--card{
+        .van-tab{color:#A2AEBF;}
+        .van-tab--active{color:$lightBg;background-color:$blue;}
+    }
+}
+.menuIcon{
+    .filterHandle{color:$blue;border: 1px solid $blue;}
+    
+}
+.otclist{
+    li{background:$lightBg;
+        .centerSpan{
+            >b{color: $threeblack}
+            >p{color: $threeblack;
+                >span{color:#A2AEBF;}
+            }
+            >.payChoose{
+                span{color:#A2AEBF;}
+            }
+        }
+    }
+}
+.van-action-sheet{
+    color:$threeblack;
+}
+
+// ****OTC二级菜单****
+.otcB{
+    background: #f5f5f5;
+    .noLine{
+        background: #fff;
+    }
+}
+
+// ****自选框****
+.filterBoxWrapper{
+    .filterContent{
+        h3{color: $threeblack;}
+        ul{
+            li{
+                color:$nineblack;
+                background: #f7f6fb;
+            }
+        }
+    }
+    .filterBtn{
+        .van-button{
+            color:$nineblack;
+        }
+    }
+}
+
+// ****OTC发起广告/购买BTC****
+.otcUserHead{
+    .otcUserHeadLeft{color:$threeblack;}
+}
+.otcUserCenter{
+    .otcUserPay{
+        dl{
+            dt{color: #A2AEBF;}
+            dd{color: $threeblack;}
+        }
+    }
+    .twoPay{border-bottom: 1px solid $lightBg;}
+    .otcdes{
+        >p{color: $unInput;}
+    }
+}
+.pline{background: #f5f5f5;}
+
+.otcBookDown{
+    h2{color:$threeblack;}
+    .otcLimit{color:#A2AEBF;}
+    .otcBookInput{
+        input{color:$unInput;background:$lightBg;}
+        .exchangePayWays{background:#EAF5FF;}
+        >div{
+            >b{color:#122030;}
+            &:nth-child(1){border-bottom:1px solid $lightest;}
+            &:nth-child(3){border-bottom:1px solid $lightest;}
+        }
+    }
+}
+
+// ****购买BTC详情****
+.chatInfo{
+    .chatInfoTop{
+        dl{
+            dt{color: $unInput;}
+            dd{color: $threeblack;}  
+        }
+    }
+}
+.orderDetInfo{
+    .van-cell-group{background:$lightBg;}
+    .van-cell{background:$lightBg;
+        border-bottom: 1px solid $lightest;
+        .van-cell__title{color: $lighter;}
+        .van-cell__value{color: $threeblack;}
+    }
+}
+.payType{
+    .van-cell{
+        &:first-child{
+            .van-cell__value{color: $unInput;}
+        }
+    }
+}
+// 购买弹出框
+.orderHandle{
+    background: $lightBg;
+    b{color: $threeblack;}
+    .van-button{
+        &:first-child{color: $unInput;border: 1px solid $lightest;}
+        &:last-child{color: $lightBg;background: $blue;border: 1px solid $blue;}
+    }
+}
+
+// otc联系弹出框样式
+.chatToUp{
+  background: #f5f5f5;
+}
+.popupPage{
+    .concactHead{
+        background: $lightBg;
+        .userInfo{
+        .userLeft{
+            >b{
+                color:$threeblack;
+            }
+        }
+        }
+        .acountInfo{
+            p{
+                span{color: $sixblack;}
+                b{
+                    &:first-child{color:$threeblack;}
+                }
+            }
+        }
+    }
+    .concatContent{
+        .inDate{
+            color:$nineblack;
+        }
+        .orderInfo{
+        background: #D8D8D8;
+        color: $lightBg;
+        }
+        .concactBox{
+            &.seller{
+                .content{
+                background: $lightBg;
+                color: $threeblack;
+                .triangle{background: $lightBg;}
+                }
+            }
+        }
+    }
+    .chatInput{
+        background: $lightBg;
+        .inputText{
+            border: 1px solid #f1f1f1;
+            input{
+                color:$threeblack;
+                input::-webkit-input-placeholder{color:#D9D9D9;}
+            }
+            i{color:#d9d9d9;}
+        }
+        span{color:#616973;}
+    }
+}
+
+// =====实名认证====
+.kycBox{
+    h3{color:$threeblack;}
+    .vanGroup{
+        .van-cell{
+            padding: 3vw 0;
+            border-bottom: 1px solid $lightest;
+            .van-cell__title{color:$threeblack;}
+            .van-cell__value{color:$nineblack;}
+        }
+    } 
+    .kycError{color:#616973;}
+}
+.kycToast{
+    color:$threeblack;
+}
+.kycCTwo{margin: 0 4vw 10vw;}
+.uploadBox{background: #F2F9FF;}
+
+// ****我的团队****
+
+.teamInfo{
+    dl{
+        dt{color:#A2AEBF;}
+        dd{color:$threeblack;}
+    }
+}
+.teamContent{
+    p{
+        b{color:$threeblack;}
+        span{color:#616973;}
+    }
+    .van-cell{
+        border-bottom: 1px solid #f5f5f5;
+        .van-cell__title{color:$sixblack;}
+        .van-cell__value{color:$threeblack;}
+    }
+}
+
+// 秒合约明细&&币种明细
+.contractBox{
+    .contractTitle{
+        span{color:$sixblack;}
+    }
+    .contractContent{
+        .contractConList{border-bottom: 1px solid $lightest;
+            dl{
+                dd{color:$threeblack;}
+            }
+            span{color:$threeblack;}
+        }
+    }
+}
+
+// 秒合约弹窗
+.secOrderBox{
+    .secOrderBoxCon{background:#fff;color:#333;
+        .secTitle{color: $threeblack;}
+        .secSel{
+            span{border:1px solid #e6e6e6;color:#A2AEBF;border-radius:1vw;
+                &.active{border-color:$c;background:$c;color:#fff;}
+            }
+        }
+        .secFlex{
+            >div{color: #616973;
+            b{color: $threeblack;}
+                .greenColor{color: #1DD063}
+            }  
+        }
+    }
+}
+
+.coinBox{
+    .coinHead{
+        span{color:$sixblack;}
+    }
+    .coinContent{
+        .coinConList{border-bottom: 1px solid $lightest;
+            dl{
+                dd{color:$threeblack;}
+            }
+            span{color:$threeblack;}
+        }
+    }
+}
+
+// 规则页面
+.rulesContent{
+    p{color:$threeblack;}
+}
+
+// 弹出框 van-picker
+.van-picker{
+    .van-picker__cancel{color: $threeblack;}
+    .van-picker__confirm{color: $threeblack;}
+}
+
+
+.adlist{
+    li{border-bottom:1px solid #ededed;
+        p{color:#999;
+            &:first-child{color:$threeblack;}
+        }
+    }
+}

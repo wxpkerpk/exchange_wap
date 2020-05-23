@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="48px" height="48px" viewBox="0 0 48 48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 62 (91390) - https://sketch.com -->
+    <title>存钱</title>
+    <desc>Created with Sketch.</desc>
+    <g id="存钱" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect id="矩形" fill-opacity="0.8" fill="#2EABB4" transform="translate(20.000000, 25.500000) scale(-1, 1) translate(-20.000000, -25.500000) " x="7" y="9" width="26" height="33" rx="4"></rect>
+        <g id="编组" transform="translate(24.500000, 24.000000) scale(-1, 1) translate(-24.500000, -24.000000) translate(6.000000, 5.000000)" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.85" stroke-width="2">
+            <path d="M2.68780488,8.4804878 L2.68780488,6.7195122 C2.68780488,3.15121951 5.60731707,0.231707317 9.17560976,0.231707317 L29.9365854,0.231707317 C33.504878,0.231707317 36.4243902,3.15121951 36.4243902,6.7195122 L36.4243902,31.4195122 C36.4243902,34.9878049 33.504878,37.9073171 29.9365854,37.9073171 L9.17560976,37.9073171 C5.60731707,37.9073171 2.68780488,34.9878049 2.68780488,31.4195122" id="路径"></path>
+            <polyline id="路径" transform="translate(6.534146, 16.706098) scale(-1, 1) translate(-6.534146, -16.706098) " points="0.231707317 19.8341463 12.8365854 19.8341463 7.46097561 13.5780488"></polyline>
+            <line x1="0.0414634146" y1="26.5804878" x2="5" y2="20" id="路径" transform="translate(2.520732, 23.290244) scale(-1, 1) translate(-2.520732, -23.290244) "></line>
+        </g>
+        <g id="编组备份" transform="translate(18.500000, 24.500000) scale(-1, 1) translate(-18.500000, -24.500000) translate(11.000000, 17.000000)" stroke="#000000" stroke-linecap="round" stroke-width="2">
+            <line x1="1.8125" y1="0.0803571429" x2="6.875" y2="5.86607143" id="路径"></line>
+            <line x1="13.2232143" y1="0.0803571429" x2="8.16071429" y2="5.86607143" id="路径"></line>
+            <line x1="7.51785714" y1="6.83035714" x2="7.51785714" y2="14.8660714" id="路径"></line>
+            <line x1="2.45535714" y1="11.25" x2="12.5803571" y2="11.25" id="路径"></line>
+            <line x1="0.285714286" y1="5.86607143" x2="14.6696429" y2="5.86607143" id="路径"></line>
+        </g>
+    </g>
+</svg>

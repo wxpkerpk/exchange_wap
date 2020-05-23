@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>验证码</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vant@2.5/lib/index.css">
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div id="app">
+        <div class="flexPage">
+            <div class="flexContent whiteBg">
+                <div class="signWrapper">
+                    <div class="signHead">
+                        <h3>输入验证码</h3>
+                        <p class="smsToast" v-html="'验证码已发送到您的手机<br/>请输入验证码'" v-if="param.type == 'mobile'"></p> 
+                        <p class="smsToast" v-html="'验证码已发送到您的邮箱<br/>请输入验证码'" v-if="param.type == 'email'"></p> 
+                    </div>
+                    <div class="signForm">
+                        <div class="smsBox">
+                            <van-password-input
+                                :value="value"
+                                :length="6"
+                                :mask="false"
+                                :focused="true"
+                                @focus="onBlur"
+                            />
+                        </div>
+                        <div class="btnBox"><van-button size="large" @click="submit()" class="active">提交</van-button></div>
+                    </div>
+                    <van-number-keyboard
+                        v-model="value"
+                        :show="show"
+                        extra-key="."
+                        maxlength="6"
+                        close-button-text="完成"
+                        @blur="show = false"
+                        @input="onInput"
+                        @delete="onDelete"
+                    />
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vant@2.5/lib/vant.min.js"></script>
+    <script src="https://cdn.bootcss.com/axios/0.19.2/axios.min.js"></script>
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data(){
+                return{
+                    backUrl:{
+                        url: ''
+                    },
+                    sms:{
+                        status: 0,
+                        second: 60
+                    },
+                    value: '',
+                    showKeyboard:false,
+                    show:true,
+                    param: {},
+                    areaCode: 86,
+                }
+            },
+            computed:{
+
+            },
+            mounted(){
+                this.param = JSON.parse(this.getParams('params'));
+                // console.log(this.param)
+                this.sendSms();
+            },
+            watch:{
+                
+            },
+            methods:{
+                getParams(name) {
+                    const reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+                    const r = window.location.search.substr(1).match(reg);
+                    if(r!=null)return  unescape(r[2]); return null;
+                },
+                checkFundPsw(){ // 是否设置资金密码
+                    this.posts({
+                        url: 'api/me/user/hasTransactionPin',
+                        data:{},
+                        success(response){
+                            if(response.data.status == 200){
+                                localStorage.setItem('setFundPsw',response.data.data);
+                            }
+                        }
+                    });
+                },
+                posts(pram){
+                    axios.post('https://api.huo-dun.com:9768/' + pram.url,JSON.stringify(pram.data),{
+                        headers:{
+                            'Content-Type': 'application/json',
+                            'Authorization':localStorage.getItem('token') ? localStorage.getItem('token') : '',
+                            'userAgent': navigator.userAgent,
+                            'deviceId': '123' || parseInt(Math.random() * 1000),
+                            'language':localStorage.getItem('language') === 'zh-CN' ? localStorage.getItem('language').split('-')[1] : "EN"
+                        }
+                    }).then((response)=>{
+                        if(response.status == 200){ 
+                            if (response.data.status == 40101 || response.data.status == 401) { //  token过期或错误
+                                this.toast(_vm.$t('form.sign.expire'));
+                            }else{
+                                pram.success(response); 
+                            }
+                        }
+                    }).catch((error)=>{ 
+                        console.log(error);
+                    });
+                },
+                toast(value,time){
+		            this.$toast({message:value,duration: time == '' ? time : 1500});
+                },
+                onBlur(value){
+                    this.showKeyboard = true;
+                    this.show = true;
+                },
+                onInput(){
+                    
+                },
+                onDelete(){
+
+                },
+                saveUserInfo(){
+                    let that = this;
+                    that.posts({
+                        url:'api/me/user/info',
+                        data: {},
+                        success(response){
+                            if (response.data.status == 200) {
+                                localStorage.setItem('user',JSON.stringify(response.data.data));
+                                that.checkFundPsw();
+                                if(that.$route.query.path){
+                                    // that.$router.push({path:that.$route.query.path});
+                                }else{
+                                    that.$router.push({ name: 'home'});
+                                }
+                            }
+                        }
+                    });
+                },
+                sendSms(){
+                    let that = this;
+                    if(that.param.url == 'signup'){
+                        if (that.param.type == 'mobile') {
+                            that.posts({
+                                url:'api/me/sms/captcha?areaCode='+that.areaCode+'&phoneNumber='+that.param.mobile.value+'&modules=signUp',
+                                data:{},
+                                success(response){
+                                    if(response.data.status == 200){
+                                        that.toast('验证码发送成功！');
+                                    }else if(response.data.status == 700){
+                                        that.toast('超过发送限制次数');
+                                    }else if(response.data.status == 900){
+                                        that.toast('验证码输入错误');
+                                    }
+                                }
+                            });
+                        } else if(that.param.type == 'email'){
+                            that.posts({
+                                url:'api/me/mail/captcha?email='+that.param.email.value+'&modules=signUp',
+                                data:{},
+                                success(response){
+                                    if(response.data.status == 200){
+                                        that.toast('验证码发送成功！');
+                                    }else if(response.data.status == 700){
+                                        that.toast('超过发送限制次数');
+                                    }else if(response.data.status == 900){
+                                        that.toast('验证码输入错误');
+                                    }
+                                }
+                            });
+                        }
+                    }
+                },
+                submit(){
+                    let that = this;
+                    // console.log(that.value)
+                    if(!that.value){
+                        that.toast('输入验证码');
+                        return;
+                    }
+                    if(that.param.url == 'signup'){
+                        if(that.param.type == 'email'){
+                            that.posts({
+                                url:'api/me/user/register',
+                                data:{
+                                    type: 'email',
+                                    password: that.param.password.value,
+                                    email: that.param.email.value || '',
+                                    captcha: that.value,
+                                    c: that.param.inviteCode.value,
+                                    // token: that.param.token.value
+                                },success(response){
+                                    if (response.data.status == 200) {
+                                        that.$toast('注册成功');
+                                        window.location.href = 'https://wap.huo-dun.com/download.html';
+                                        // that.$store.state.isLogin = true;
+                                        // localStorage.setItem("token",response.data.data.token);
+                                        // localStorage.setItem("expire",response.data.data.expire);
+                                        // localStorage.setItem('loginTime',new Date().getTime());
+                                        // localStorage.setItem("login",JSON.stringify(that.$store.state.isLogin));
+                                        // that.saveUserInfo();
+                                    }else if(response.data.status == 700){
+                                        that.toast('请输入有效的划转数量');
+                                    }else if(response.data.status == 701){
+                                        that.toast('验证码错误');
+                                    }
+                                }
+                            });
+                        }else if(that.param.type == 'mobile'){
+                            that.posts({
+                                url:'api/me/user/register',
+                                data:{
+                                    areaCode:that.areaCode,
+                                    type: 'telPhone',
+                                    password: that.param.password.value,
+                                    telPhone: that.param.mobile.value,
+                                    captcha: that.value,
+                                    c: that.param.inviteCode.value,
+                                    // token: that.param.token.value
+                                },success(response){
+                                    if (response.data.status == 200) {
+                                        that.$toast('注册成功');
+                                        window.location.href = 'https://wap.huo-dun.com/download.html';
+                                        // that.$store.state.isLogin = true;
+                                        // localStorage.setItem("token",response.data.data.token);
+                                        // localStorage.setItem("expire",response.data.data.expire);
+                                        // localStorage.setItem('loginTime',new Date().getTime());
+                                        // localStorage.setItem("login",JSON.stringify(that.$store.state.isLogin));
+                                        // that.saveUserInfo();
+                                    }else if(response.data.status == 700){
+                                        that.toast('请输入有效的划转数量');
+                                    }else if(response.data.status == 701){
+                                        that.toast('验证码错误');
+                                    }
+                                }
+                            });
+                        }
+                    }else if(that.param.url == 'signin'){
+                        if(that.param.type == 'email'){
+                            that.posts({
+                                url:'api/me/security/login',
+                                data: {
+                                    areaCode:that.areaCode,
+                                    username: that.param.email.value,
+                                    password: that.param.password.value,
+                                    captcha: that.value,
+                                    // token: that.param.token.value
+                                },
+                                success(response){
+                                    if (response.data.status == 200) {
+                                        that.$toast('登录成功');
+                                        that.$store.state.isLogin = true;
+                                        localStorage.setItem("token",response.data.data.token);
+                                        localStorage.setItem("expire",response.data.data.expire);
+                                        localStorage.setItem('loginTime',new Date().getTime());
+                                        localStorage.setItem("login",JSON.stringify(that.$store.state.isLogin));
+                                        // that.saveUserInfo();
+                                    } else if(response.data.status == 701){
+                                        that.toast('验证码错误');
+                                    }else if(response.data.status == 703){
+                                        that.toast('验证码重复发送');
+                                    } else {
+                                        that.toast(response.data.message);
+                                    }
+                                }
+                            });
+                        }else if(that.param.type == 'mobile'){
+                            that.posts({
+                                url:'api/me/security/login',
+                                data: {
+                                    areaCode:that.areaCode,
+                                    username: that.param.mobile.value,
+                                    password: that.param.password.value,
+                                    captcha: that.value,
+                                    // token: that.param.token.value
+                                },
+                                success(response){
+                                    if (response.data.status == 200) {
+                                        that.$toast('登录成功');
+                                        that.$store.state.isLogin = true;
+                                        localStorage.setItem("token",response.data.data.token);
+                                        localStorage.setItem("expire",response.data.data.expire);
+                                        localStorage.setItem('loginTime',new Date().getTime());
+                                        localStorage.setItem("login",JSON.stringify(that.$store.state.isLogin));
+                                        that.saveUserInfo();
+                                    }else if(response.data.status == 701){
+                                        that.toast('验证码错误');
+                                    }else if(response.data.status == 703){
+                                        that.toast('验证码重复发送');
+                                    } else {
+                                        that.toast(response.data.message);
+                                    }
+                                }
+                            });
+                        }
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0, user-scalable=0">
+    <title>注册</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vant@2.5/lib/index.css">
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div id="app">
+        <div class="flexPage">
+            <div class="flexContent">
+                <div class="signWrapper">
+                    <img src="./logo.svg" alt="" class="logo">
+                    <div class="signType">
+                        <span
+                            @click="onChangeTab('mobile')"
+                            :class="!cur && 'title-active'"
+                        >手机注册</span>
+                        <span
+                            @click="onChangeTab('email')"
+                            :class="cur && 'title-active'"
+                        >邮箱注册</span>
+                    </div>
+                    <!-- 手机注册 -->
+                    <div class="signForm" v-if="cur == 0">
+                        <div class="cellGroup">
+                            <div class="inputBox">
+                                <van-field type="tel" class="nbd" v-model="formMobile.data.mobile.value" maxlength="20" placeholder="输入手机号码" clearable @blur="onBlur('mobile')" />
+                            </div>
+                        </div>
+                        <!-- <div class="cellGroup">
+                            <div class="inputBox">
+                                <van-field type="tel" v-model="formMobile.data.mobile.value" maxlength="20" placeholder="$t('validate.safe.c1')" clearable>
+                                    <p slot="right-icon" class="signin flexLevel"><span class="sendSms" @click="$router.push('/forget')">{{$t('button.public.sent')}}</span></p>
+                                </van-field>
+                            </div>
+                        </div> -->
+                        <div class="cellGroup">
+                            <div class="inputBox">
+                                <van-field type="password" v-model="formMobile.data.password.value" placeholder="设置密码" clearable maxlength="16">
+                                    <div slot="right-icon" @click="onToast" class="ml3"><van-icon name="question-o" /></div>
+                                </van-field>
+                            </div>
+                        </div>
+                        <div class="cellGroup">
+                            <div class="inputBox">
+                                <van-field type="password" v-model="formMobile.data.confirmPsw.value" placeholder="再次输入密码" clearable maxlength="16"></van-field>
+                            </div>
+                        </div>
+                        <div class="cellGroup lastCell">
+                            <div class="inputBox">
+                                <van-field type="text" v-model="formMobile.data.inviteCode.value" placeholder="邀请码(选填)" clearable maxlength="6" />
+                            </div>
+                        </div>
+                        <!-- <div class="rules">
+                            <i :class="['iconfont', formMobile.checkStatus ? 'iconxuanzhong' : 'iconweixz']" @click="formMobile.checkStatus = !formMobile.checkStatus"></i>
+                            <span>同意隐私政策和服务条款</span>
+                        </div> -->
+                        <div class="btnBox"><van-button size="large" @click="submit" :class="{active: formMobile.btnStatus}">注册</van-button></div>
+                    </div>
+                    <!-- 邮箱注册 -->
+                    <div class="signForm" v-if="cur == 1">
+                        <div class="cellGroup">
+                            <div class="inputBox">
+                                <van-field type="text" v-model="formEmail.data.email.value" maxlength="64" placeholder="输入邮箱" clearable @blur="onBlur('email')" />
+                            </div>
+                        </div>
+                        <div class="cellGroup">
+                            <div class="inputBox">
+                                <van-field type="password" v-model="formEmail.data.password.value" placeholder="设置密码" clearable maxlength="16">
+                                    <div slot="right-icon" @click="onToast" class="ml3"><van-icon name="question-o" /></div>
+                                </van-field>
+                            </div>
+                        </div>
+                        <div class="cellGroup">
+                            <div class="inputBox">
+                                <van-field type="password" v-model="formEmail.data.confirmPsw.value" placeholder="再次输入密码" clearable maxlength="16"></van-field>
+                            </div>
+                        </div>
+                        <div class="cellGroup lastCell">
+                            <div class="inputBox">
+                                <van-field type="text" v-model="formEmail.data.inviteCode.value" placeholder="邀请码(选填)" clearable maxlength="6" />
+                            </div>
+                        </div>
+                        <!-- <div class="rules">
+                            <i :class="['iconfont', formEmail.checkStatus ? 'iconxuanzhong' : 'iconweixz']" @click="formEmail.checkStatus = !formEmail.checkStatus"></i>
+                            同意隐私政策和服务条款
+                        </div> -->
+                        <div class="btnBox"><van-button size="large" @click="submit" :class="{active: formEmail.btnStatus}">注册</van-button></div>
+                    </div>
+                </div>
+            </div>
+            <canvas id="bgCanvas">
+                Your Browser Don't Support Canvas, Please Download Chrome ^_^``
+            </canvas>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vant@2.5/lib/vant.min.js"></script>
+    <script src="https://cdn.bootcss.com/axios/0.19.2/axios.min.js"></script>
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data(){
+                return{
+                    backUrl:{
+                        url: 'signin'
+                    },
+                    cur: 0, 
+                    showEmail: false,
+                    number: '', // 手机区域码
+                    isRegister:false,
+                    formMobile:{ // 手机注册表单
+                        eyesOn: false,
+                        checkStatus: false,
+                        btnStatus: false,
+                        data:{
+                            mobile: {
+                                value: '',
+                                isDefault: true,
+                                isError: false,
+                            },
+                            password: {
+                                value: '',
+                                isDefault: true,
+                                isError: false,
+                            },
+                            confirmPsw:{
+                                value: '',
+                                isDefault: true,
+                                isError: false,
+                            },
+                            inviteCode:{
+                                value: '',
+                                isDefault: true,
+                                isError: false,
+                            },
+                            // token:{
+                            //     value:'',
+                            //     isDefault: true,
+                            //     isError: false,
+                            // } 
+                        }   
+                    },
+                    formEmail:{// 邮箱注册表单
+                        eyesOn: false,
+                        checkStatus: false,
+                        btnStatus: false,
+                        data:{
+                            email: {
+                                value: '',
+                                isDefault: true,
+                                isError: false,
+                            },
+                            password: {
+                                value: '',
+                                isDefault: true,
+                                isError: false,
+                            },
+                            confirmPsw:{
+                                value: '',
+                                isDefault: true,
+                                isError: false,
+                            },
+                            inviteCode:{
+                                value: '',
+                                isDefault: true,
+                                isError: false,
+                            },
+                            // token:{
+                            //     value:'',
+                            //     isDefault: true,
+                            //     isError: false,
+                            // } 
+                        }   
+                    },
+                    // vaptchaObj:null,
+                    cnLink:'/service/%2Fhc%2Fzh-cn%2Farticles%2F360036254431-%25E6%259C%258D%25E5%258A%25A1%25E5%258D%258F%25E8%25AE%25AE',
+                    enLink:'/service/%2Fhc%2Fen-001%2Farticles%2F360036254431-Service-agreement'
+                }
+            },
+            computed:{
+                vLanguage(){
+                    return localStorage.getItem('language') === 'zh-CN' ? this.cnLink : this.enLink;
+                }
+            },
+            created(){
+                this.number = 86;
+                const inviteCode = this.getParams('inviteCode');
+                this.formMobile.data.inviteCode.value = inviteCode || '';
+                this.formEmail.data.inviteCode.value = inviteCode || '';
+                // this.initNec();
+                // this.getShare();
+            },
+            mounted() {
+                this.initCanvas();
+            },
+            beforeDestroy(){
+                
+            },
+            watch:{
+                "formMobile.data.mobile.value":function(){
+                    if(!this.formMobile.data.mobile.value){
+                        this.toast('手机号不能为空');
+                    }
+                    this.formMobile.data.mobile.isDefault = false;
+                    this.formMobile.data.mobile.isError = !this.formMobile.data.mobile.value;
+                    this.checkAllForm('mobile');
+                },
+                "formEmail.data.email.value":function(){
+                    if(!this.formEmail.data.email.value){
+                        this.toast('电子邮箱不能为空');
+                    }
+                    this.formEmail.data.email.isDefault = false;
+                    this.formEmail.data.email.isError = !this.formEmail.data.email.value;
+                    this.checkAllForm('email');
+                },
+                "formMobile.data.password.value":function(){
+                    if(!this.formMobile.data.password.value){
+                        this.toast('密码不能为空');
+                    }
+                    this.formMobile.data.password.isDefault = false;
+                    this.formMobile.data.password.isError = !this.formMobile.data.password.value;
+                    this.checkAllForm();
+                },
+                "formEmail.data.password.value":function(){
+                    if(!this.formEmail.data.password.value){
+                        this.toast('密码不能为空');
+                    }
+                    this.formEmail.data.password.isDefault = false;
+                    this.formEmail.data.password.isError = !this.formEmail.data.password.value;
+                    this.checkAllForm();
+                },
+                "formMobile.data.confirmPsw.value":function(){
+                    if(!this.formMobile.data.confirmPsw.value){
+                        this.toast('确认密码不能为空');
+                    }
+                    this.formMobile.data.confirmPsw.isDefault = false;
+                    this.formMobile.data.confirmPsw.isError = !this.formMobile.data.confirmPsw.value;
+                    this.checkAllForm();
+                },
+                "formEmail.data.confirmPsw.value":function(){
+                    if(!this.formEmail.data.confirmPsw.value){
+                        this.toast('确认密码不能为空');
+                    }
+                    this.formEmail.data.confirmPsw.isDefault = false;
+                    this.formEmail.data.confirmPsw.isError = !this.formEmail.data.confirmPsw.value;
+                    this.checkAllForm();
+                },
+                // "formMobile.data.inviteCode.value":function(){
+                //     if(!this.formMobile.data.inviteCode.value){
+                //         this.toast(this.$t('message.sign.inviteCodeEmpty'));
+                //     }   
+                //     this.formMobile.data.inviteCode.isDefault = false;
+                //     this.formMobile.data.inviteCode.isError = !this.formMobile.data.inviteCode.value;
+                //     this.checkAllForm();
+                // },
+                // "formEmail.data.inviteCode.value":function(){
+                //     if(!this.formEmail.data.inviteCode.value){
+                //         this.toast(this.$t('message.sign.inviteCodeEmpty'));
+                //     }   
+                //     this.formEmail.data.inviteCode.isDefault = false;
+                //     this.formEmail.data.inviteCode.isError = !this.formEmail.data.inviteCode.value;
+                //     this.checkAllForm();
+                // },
+            },
+            methods:{
+                getParams(name) {
+                    const reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+                    const r = window.location.search.substr(1).match(reg);
+                    if(r!=null)return  unescape(r[2]); return null;
+                },
+                toast(value,time){
+		            this.$toast({message:value,duration: time == '' ? time : 1500});
+                },
+                checkValue(value,type){
+                    var regular = "";
+                    switch(type){
+                        case "number": 			//数字
+                            regular = /^[0-9]+.?[0-9]*$/;
+                            break;
+                        case "int": 			//正整数
+                            regular = /^[0-9]*[1-9][0-9]*$/;
+                            break;
+                        case "noint": 			//非负整数
+                            regular = /^(0|[1-9]\d*)$/;
+                            break;
+                        case "string": 			//字符串
+                            regular = /^\s*$/g;
+                            break;
+                        case "sms4": 			//4位验证码
+                            regular = /^\d{4}$/;
+                            break;
+                        case "sms6": 			//6位验证码
+                            regular = /^\d{6}$/;
+                            break;
+                        case "time": 			//时间 0000-00-00
+                            regular = /^(?:19|20)[0-9][0-9]-(?:(?:0[1-9])|(?:1[0-2]))-(?:(?:[0-2][1-9])|(?:[1-3][0-1]))$/;
+                            break;
+                        case "qq": 				//QQ号
+                            regular = /^\d{5,11}$/;
+                            break;
+                        case "mobile": 			//中国手机号码
+                            regular = /^1[3456789]\d{9}$/;
+                            break;
+                        case "email": 			//邮箱
+                            regular = /^.+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+                            break;
+                        case "username": 		//用户名:邮箱/手机
+                            regular = /^.+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$|^1[3456789]\d{9}$/;
+                            break;
+                        case "idcard": 			//15/18位中国身份证
+                            regular = /^(\d{15}$|^\d{18}$|^\d{17}(\d|X|x))$/;
+                            break;
+                        case "passport": 			// 中国护照
+                            regular = /(^[EeKkGgDdSsPpHh]\d{8}$)|(^(([Ee][a-fA-F])|([DdSsPp][Ee])|([Kk][Jj])|([Mm][Aa])|(1[45]))\d{7}$)/;
+                            break;
+                        case "password": 		//数字、字母、符号至少两种组合的6-16位密码
+                            // regular = /^(?!^\d*$)(?!^[a-zA-Z]*$)(?!^[-_*+@]*$)[-\d\w*+@]{6,16}$/;
+                            regular = /((?=.*[0-9])(?=.*[A-z]))|((?=.*[A-z])(?=.*[^A-z0-9]))|((?=.*[0-9])(?=.*[^A-z0-9]))^.{6,16}$/
+                            break;
+                        case "random6": 		//6位以上任意字符
+                            regular = /^.{6,}$/;
+                        break;
+                        case "uppercase": 		//大写字母
+                            regular = /^.*([A-Z])+.*$/;
+                            break;
+                        case "lowercase": 		//小写字母
+                            regular = /^.*([a-z])+.*$/;
+                            break;
+                        case "inter": 		//数字
+                            regular = /^.*([0-9])+.*$/;
+                            break;
+                        case "eth":
+                            regular = /^(0x)?[0-9a-fA-F]{40}$/
+                            break;
+                    }
+                    return regular.test(value);
+                },
+                posts(pram){
+                    axios.post('https://api.huo-dun.com:9768/' + pram.url,JSON.stringify(pram.data),{
+                        headers:{
+                            'Content-Type': 'application/json',
+                            'Authorization':localStorage.getItem('token') ? localStorage.getItem('token') : '',
+                            'userAgent': navigator.userAgent,
+                            'deviceId': '123' || parseInt(Math.random() * 1000),
+                            'language':localStorage.getItem('language') === 'zh-CN' ? localStorage.getItem('language').split('-')[1] : "EN"
+                        }
+                    }).then((response)=>{
+                        if(response.status == 200){ 
+                            if (response.data.status == 40101 || response.data.status == 401) { //  token过期或错误
+                                this.toast(_vm.$t('form.sign.expire'));
+                            }else{
+                                pram.success(response); 
+                            }
+                        }
+                    }).catch((error)=>{ 
+                        console.log(error);
+                    });
+                },
+                initCanvas() {
+                    var canvas = document.getElementById('bgCanvas'),
+                    can_w = parseInt(canvas.getAttribute('width')),
+                    can_h = parseInt(canvas.getAttribute('height')),
+                    ctx = canvas.getContext('2d');
+                    var ball = {
+                        x: 0,
+                        y: 0,
+                        vx: 0,
+                        vy: 0,
+                        r: 0,
+                        alpha: 1,
+                        phase: 0
+                    },
+                    ball_color = {
+                        r: 207,
+                        g: 255,
+                        b: 4
+                    },
+                    R = 2,
+                    balls = [],
+                    alpha_f = 0.03,
+                    alpha_phase = 0,
+                        
+                    // Line
+                    link_line_width = 0.8,
+                    dis_limit = 260,
+                    add_mouse_point = true,
+                    mouse_in = false,
+                    mouse_ball = {
+                        x: 0,
+                        y: 0,
+                        vx: 0,
+                        vy: 0,
+                        r: 0,
+                        type: 'mouse'
+                    };
+
+                    // Random speed
+                    function getRandomSpeed(pos){
+                        var  min = -1,
+                        max = 1;
+                        switch(pos){
+                            case 'top':
+                                return [randomNumFrom(min, max), randomNumFrom(0.1, max)];
+                                break;
+                            case 'right':
+                                return [randomNumFrom(min, -0.1), randomNumFrom(min, max)];
+                                break;
+                            case 'bottom':
+                                return [randomNumFrom(min, max), randomNumFrom(min, -0.1)];
+                                break;
+                            case 'left':
+                                return [randomNumFrom(0.1, max), randomNumFrom(min, max)];
+                                break;
+                            default:
+                                return;
+                                break;
+                        }
+                    }
+                    function randomArrayItem(arr){
+                        return arr[Math.floor(Math.random() * arr.length)];
+                    }
+                    function randomNumFrom(min, max){
+                        return Math.random()*(max - min) + min;
+                    }
+                    // console.log(randomNumFrom(0, 10));
+                    // Random Ball
+                    function getRandomBall(){
+                        var pos = randomArrayItem(['top', 'right', 'bottom', 'left']);
+                        switch(pos){
+                            case 'top':
+                                return {
+                                    x: randomSidePos(can_w),
+                                    y: -R,
+                                    vx: getRandomSpeed('top')[0],
+                                    vy: getRandomSpeed('top')[1],
+                                    r: R,
+                                    alpha: 1,
+                                    phase: randomNumFrom(0, 10)
+                                }
+                                break;
+                            case 'right':
+                                return {
+                                    x: can_w + R,
+                                    y: randomSidePos(can_h),
+                                    vx: getRandomSpeed('right')[0],
+                                    vy: getRandomSpeed('right')[1],
+                                    r: R,
+                                    alpha: 1,
+                                    phase: randomNumFrom(0, 10)
+                                }
+                                break;
+                            case 'bottom':
+                                return {
+                                    x: randomSidePos(can_w),
+                                    y: can_h + R,
+                                    vx: getRandomSpeed('bottom')[0],
+                                    vy: getRandomSpeed('bottom')[1],
+                                    r: R,
+                                    alpha: 1,
+                                    phase: randomNumFrom(0, 10)
+                                }
+                                break;
+                            case 'left':
+                                return {
+                                    x: -R,
+                                    y: randomSidePos(can_h),
+                                    vx: getRandomSpeed('left')[0],
+                                    vy: getRandomSpeed('left')[1],
+                                    r: R,
+                                    alpha: 1,
+                                    phase: randomNumFrom(0, 10)
+                                }
+                                break;
+                        }
+                    }
+                    function randomSidePos(length){
+                        return Math.ceil(Math.random() * length);
+                    }
+
+                    // Draw Ball
+                    function renderBalls(){
+                        Array.prototype.forEach.call(balls, function(b){
+                        if(!b.hasOwnProperty('type')){
+                            ctx.fillStyle = 'rgba('+ball_color.r+','+ball_color.g+','+ball_color.b+','+b.alpha+')';
+                            ctx.beginPath();
+                            ctx.arc(b.x, b.y, R, 0, Math.PI*2, true);
+                            ctx.closePath();
+                            ctx.fill();
+                        }
+                        });
+                    }
+
+                    // Update balls
+                    function updateBalls(){
+                        var new_balls = [];
+                        Array.prototype.forEach.call(balls, function(b){
+                            b.x += b.vx;
+                            b.y += b.vy;
+                            
+                            if(b.x > -(50) && b.x < (can_w+50) && b.y > -(50) && b.y < (can_h+50)){
+                            new_balls.push(b);
+                            }
+                            
+                            // alpha change
+                            b.phase += alpha_f;
+                            b.alpha = Math.abs(Math.cos(b.phase));
+                            // console.log(b.alpha);
+                        });
+                        
+                        balls = new_balls.slice(0);
+                    }
+
+                    // loop alpha
+                    function loopAlphaInf(){
+                        
+                    }
+
+                    // Draw lines
+                    function renderLines(){
+                        var fraction, alpha;
+                        for (var i = 0; i < balls.length; i++) {
+                            for (var j = i + 1; j < balls.length; j++) {
+                            
+                            fraction = getDisOf(balls[i], balls[j]) / dis_limit;
+                                
+                            if(fraction < 1){
+                                alpha = (1 - fraction).toString();
+
+                                ctx.strokeStyle = 'rgba(150,150,150,'+alpha+')';
+                                ctx.lineWidth = link_line_width;
+                                
+                                ctx.beginPath();
+                                ctx.moveTo(balls[i].x, balls[i].y);
+                                ctx.lineTo(balls[j].x, balls[j].y);
+                                ctx.stroke();
+                                ctx.closePath();
+                            }
+                            }
+                        }
+                    }
+
+                    // calculate distance between two points
+                    function getDisOf(b1, b2){
+                        var  delta_x = Math.abs(b1.x - b2.x),
+                        delta_y = Math.abs(b1.y - b2.y);
+                        
+                        return Math.sqrt(delta_x*delta_x + delta_y*delta_y);
+                    }
+
+                    // add balls if there a little balls
+                    function addBallIfy(){
+                        if(balls.length < 20){
+                            balls.push(getRandomBall());
+                        }
+                    }
+
+                    // Render
+                    function render(){
+                        ctx.clearRect(0, 0, can_w, can_h);
+                        
+                        renderBalls();
+                        
+                        renderLines();
+                        
+                        updateBalls();
+                        
+                        addBallIfy();
+                        
+                        window.requestAnimationFrame(render);
+                    }
+
+                    // Init Balls
+                    function initBalls(num){
+                        for(var i = 1; i <= num; i++){
+                            balls.push({
+                                x: randomSidePos(can_w),
+                                y: randomSidePos(can_h),
+                                vx: getRandomSpeed('top')[0],
+                                vy: getRandomSpeed('top')[1],
+                                r: R,
+                                alpha: 1,
+                                phase: randomNumFrom(0, 10)
+                            });
+                        }
+                    }
+                    // Init Canvas
+                    function initCanvas(){
+                        canvas.setAttribute('width', window.innerWidth);
+                        canvas.setAttribute('height', window.innerHeight);
+                        
+                        can_w = parseInt(canvas.getAttribute('width'));
+                        can_h = parseInt(canvas.getAttribute('height'));
+                    }
+                    window.addEventListener('resize', function(e){
+                        console.log('Window Resize...');
+                        initCanvas();
+                    });
+
+                    function goMovie(){
+                        initCanvas();
+                        initBalls(30);
+                        window.requestAnimationFrame(render);
+                    }
+                    goMovie();
+
+                    // Mouse effect
+                    canvas.addEventListener('mouseenter', function(){
+                        console.log('mouseenter');
+                        mouse_in = true;
+                        balls.push(mouse_ball);
+                    });
+                    canvas.addEventListener('mouseleave', function(){
+                        console.log('mouseleave');
+                        mouse_in = false;
+                        var new_balls = [];
+                        Array.prototype.forEach.call(balls, function(b){
+                            if(!b.hasOwnProperty('type')){
+                                new_balls.push(b);
+                            }
+                        });
+                        balls = new_balls.slice(0);
+                    });
+                    canvas.addEventListener('mousemove', function(e){
+                        var e = e || window.event;
+                        mouse_ball.x = e.pageX;
+                        mouse_ball.y = e.pageY;
+                        // console.log(mouse_ball);
+                    });
+                },
+                checkAllForm(){
+                    let arr = [];
+                    let validate = true;
+                    if(this.cur == 0){
+                        arr = [
+                            this.formMobile.data.mobile.isDefault,
+                            this.formMobile.data.mobile.isError,
+                            this.formMobile.data.password.isDefault,
+                            this.formMobile.data.password.isError,
+                            this.formMobile.data.confirmPsw.isDefault,
+                            this.formMobile.data.confirmPsw.isError,
+                            // this.formMobile.data.inviteCode.isDefault,
+                            // this.formMobile.data.inviteCode.isError,
+                        ];
+                        for(let i in arr){
+                            if(arr[i]){
+                                validate = false;
+                            }
+                        }
+                        this.formMobile.btnStatus = validate;
+                    }else{
+                        arr = [
+                            this.formEmail.data.email.isDefault,
+                            this.formEmail.data.email.isError,
+                            this.formEmail.data.password.isDefault,
+                            this.formEmail.data.password.isError,
+                            this.formEmail.data.confirmPsw.isDefault,
+                            this.formEmail.data.confirmPsw.isError,
+                            // this.formEmail.data.inviteCode.isDefault,
+                            // this.formEmail.data.inviteCode.isError,
+                        ];
+                        for(let i in arr){
+                            if(arr[i]){
+                                validate = false;
+                            }
+                        }
+                        this.formEmail.btnStatus = validate;
+                    }
+                },
+                onChangeTab(type){
+                    switch(type){
+                        case 'mobile':
+                            this.cur = 0;
+                            break
+                        case 'email':
+                            this.cur = 1;
+                            break
+                        default:
+                            this.cur = 0;
+                            break
+                    }
+                },
+                onToast(){
+                    this.toast('请输入数字、字母、符号至少两种组合的6-16位密码！');
+                },
+                // getShare(){
+                //     let that = this;
+                //     let obj = that.$mkt.getSplit(location.hash);
+                //     if(obj != null){
+                //         for(var key in obj){
+                //             if(key == 'inviteCode'){
+                //                 that.formMobile.data.inviteCode.value = obj.inviteCode;
+                //                 that.formEmail.data.inviteCode.value = obj.inviteCode;
+                //             }
+                //         }
+                //     }else{
+                //         let inviteCode = localStorage.getItem('inviteCode');
+                //         if(inviteCode){
+                //             that.formMobile.data.inviteCode.value = inviteCode;
+                //             that.formEmail.data.inviteCode.value =  inviteCode;
+                //         }
+                //     }
+                // },
+                onBlur(){
+                    let that = this;
+                    if(that.cur == 0 && that.formMobile.data.mobile.value){
+                        that.posts({
+                            url:'api/me/user/checkRepeat?areaCode=86'+'&telPhone='+that.formMobile.data.mobile.value,
+                            data:{},
+                            success(response){
+                                if (response.data.status==200) {
+                                    that.isRegister = false;
+                                }else if(response.data.status==700){
+                                    this.toast('手机号码格式错误');
+                                    that.isRegister = true;
+                                }else if(response.data.status==901){
+                                    that.$toast('用户已存在');
+                                    that.isRegister = true;
+                                }
+                            }
+                        });
+                    }else if(that.cur == 1 && that.formEmail.data.email.value){
+                        that.posts({
+                            url:'api/me/user/checkRepeat?email='+that.formEmail.data.email.value,
+                            data:{},
+                            success(response){
+                                if (response.data.status==200) {
+                                    that.isRegister = false;
+                                }else if(response.data.status==700){
+                                    this.toast('电子邮箱格式错误！');
+                                    that.isRegister = true;
+                                }else if(response.data.status==901){
+                                    that.$toast('用户已存在');
+                                    that.isRegister = true;
+                                }
+                            }
+                        });
+                    }
+                },
+                submit(token = ''){
+                    let that = this;
+                    if(that.cur == 0){
+                        if(that.formMobile.btnStatus){
+                            if(!that.checkValue(that.formMobile.data.password.value,'password')){
+                                this.toast('请输入数字、字母、符号至少两种组合的6-16位密码！');
+                                return;
+                            }
+                            if(that.formMobile.data.password.value != that.formMobile.data.confirmPsw.value){
+                                this.toast('两次密码输入不一致！');
+                                return;
+                            }
+                            // if(!that.formMobile.checkStatus){
+                            //     this.toast('请确认勾选用户协议！');
+                            //     return;
+                            // }
+                            if(!that.isRegister){
+                                localStorage.setItem('areaCode',that.number);
+                                // that.formMobile.data.token.value = token;
+                                // that.$router.push({path:'/smscode',query:{param: JSON.stringify({...that.formMobile.data,url: 'signup',type: 'mobile'})}});
+                                window.location.href = `https://wap.huo-dun.com/smscode.html?params=${JSON.stringify({...that.formMobile.data, url: 'signup', type: 'mobile'})}`;
+                            }else{
+                                this.toast('该账号已注册');
+                            }
+                        }else{
+                            this.toast('notEmpty');
+                        }
+                    }else if(that.cur == 1){
+                        if(that.formEmail.btnStatus){
+                            if(!that.checkValue(that.formEmail.data.email.value.trim(),'email')){
+                                this.toast('电子邮箱格式错误');
+                                return;
+                            }
+                            if(!that.checkValue(that.formEmail.data.password.value,'password')){
+                                this.toast('请输入数字、字母、符号至少两种组合的6-16位密码！');
+                                return;
+                            }
+                            if(that.formEmail.data.password.value != that.formEmail.data.confirmPsw.value){
+                                this.toast('两次密码输入不一致！');
+                                return;
+                            }
+                            // if(!that.formEmail.checkStatus){
+                            //     this.toast('请确认勾选用户协议！');
+                            //     return;
+                            // }
+                            if(!that.isRegister){
+                                // that.formEmail.data.token.value = token;
+                                // that.$router.push({path:'/smscode',query:{param: JSON.stringify({...that.formEmail.data,url: 'signup',type: 'email'})}});
+                                window.location.href = `https://wap.huo-dun.com/smscode.html?params=${JSON.stringify({...that.formEmail.data, url: 'signup', type: 'email'})}`;
+                            }else{
+                                this.toast('该账号已注册');
+                            }
+                        }else{
+                            this.toast('请填写完所有选项！');
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

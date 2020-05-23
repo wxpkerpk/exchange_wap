@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0, user-scalable=0">
+    <title>下载</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vant@2.5/lib/index.css">
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div id="app">
+        <div class="download">
+            <!-- <div class="switch" @click="switch">{{ switchText }}</div> -->
+            <div class="logo"><img src="./logo.svg" alt=""></div>
+            <div class="mark">Huodun</div>
+            <!-- <div class="information">当前版本：{{(isIOS ? iosVersion : androidVersion)}}</div> -->
+            <div class="buttonWrapper">
+                <!-- <van-loading type="spinner" color="#1989fa" v-if="loading"/> -->
+                <div class="button" @click="downloadApp('android')">
+                    <img src="./img/android.svg">
+                    安卓下载
+                </div>
+                <div class="button" @click="downloadApp('ios')">
+                    <img src="./img/apple.svg" alt="">
+                    苹果下载
+                </div>
+            </div>
+            <div class="overlay" v-if="show">
+                <img src="./img/goBrowser.png" alt="">
+            </div>
+        </div>
+        <canvas id="bgCanvas">
+            Your Browser Don't Support Canvas, Please Download Chrome ^_^``
+        </canvas>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vant@2.5/lib/vant.min.js"></script>
+    <script src="https://cdn.bootcss.com/axios/0.19.2/axios.min.js"></script>
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data(){
+                return{
+                    show: false,
+                    iosUrl: '',
+                    androidUrl: '',
+                    iosVersion: '',
+                    androidVersion: '',
+                    isIOS: false,
+                    loading: false,
+                    vLanguage:localStorage.getItem('language')=='zh-CN' ? true : false
+                }
+            },
+            computed:{
+                switchText() {
+                    return this.isIOS ? '安卓下载' : 'IOS下载';
+                }
+            },
+            components:{},
+            mounted(){
+                let that = this;
+                that.getUrl();
+                this.initCanvas();
+            },
+            watch:{},
+            methods:{
+                switch() {
+                    this.isIOS = !this.isIOS;
+                },
+                initCanvas() {
+                    var canvas = document.getElementById('bgCanvas'),
+                    can_w = parseInt(canvas.getAttribute('width')),
+                    can_h = parseInt(canvas.getAttribute('height')),
+                    ctx = canvas.getContext('2d');
+                    var ball = {
+                        x: 0,
+                        y: 0,
+                        vx: 0,
+                        vy: 0,
+                        r: 0,
+                        alpha: 1,
+                        phase: 0
+                    },
+                    ball_color = {
+                        r: 207,
+                        g: 255,
+                        b: 4
+                    },
+                    R = 2,
+                    balls = [],
+                    alpha_f = 0.03,
+                    alpha_phase = 0,
+                        
+                    // Line
+                    link_line_width = 0.8,
+                    dis_limit = 260,
+                    add_mouse_point = true,
+                    mouse_in = false,
+                    mouse_ball = {
+                        x: 0,
+                        y: 0,
+                        vx: 0,
+                        vy: 0,
+                        r: 0,
+                        type: 'mouse'
+                    };
+
+                    // Random speed
+                    function getRandomSpeed(pos){
+                        var  min = -1,
+                        max = 1;
+                        switch(pos){
+                            case 'top':
+                                return [randomNumFrom(min, max), randomNumFrom(0.1, max)];
+                                break;
+                            case 'right':
+                                return [randomNumFrom(min, -0.1), randomNumFrom(min, max)];
+                                break;
+                            case 'bottom':
+                                return [randomNumFrom(min, max), randomNumFrom(min, -0.1)];
+                                break;
+                            case 'left':
+                                return [randomNumFrom(0.1, max), randomNumFrom(min, max)];
+                                break;
+                            default:
+                                return;
+                                break;
+                        }
+                    }
+                    function randomArrayItem(arr){
+                        return arr[Math.floor(Math.random() * arr.length)];
+                    }
+                    function randomNumFrom(min, max){
+                        return Math.random()*(max - min) + min;
+                    }
+                    // console.log(randomNumFrom(0, 10));
+                    // Random Ball
+                    function getRandomBall(){
+                        var pos = randomArrayItem(['top', 'right', 'bottom', 'left']);
+                        switch(pos){
+                            case 'top':
+                                return {
+                                    x: randomSidePos(can_w),
+                                    y: -R,
+                                    vx: getRandomSpeed('top')[0],
+                                    vy: getRandomSpeed('top')[1],
+                                    r: R,
+                                    alpha: 1,
+                                    phase: randomNumFrom(0, 10)
+                                }
+                                break;
+                            case 'right':
+                                return {
+                                    x: can_w + R,
+                                    y: randomSidePos(can_h),
+                                    vx: getRandomSpeed('right')[0],
+                                    vy: getRandomSpeed('right')[1],
+                                    r: R,
+                                    alpha: 1,
+                                    phase: randomNumFrom(0, 10)
+                                }
+                                break;
+                            case 'bottom':
+                                return {
+                                    x: randomSidePos(can_w),
+                                    y: can_h + R,
+                                    vx: getRandomSpeed('bottom')[0],
+                                    vy: getRandomSpeed('bottom')[1],
+                                    r: R,
+                                    alpha: 1,
+                                    phase: randomNumFrom(0, 10)
+                                }
+                                break;
+                            case 'left':
+                                return {
+                                    x: -R,
+                                    y: randomSidePos(can_h),
+                                    vx: getRandomSpeed('left')[0],
+                                    vy: getRandomSpeed('left')[1],
+                                    r: R,
+                                    alpha: 1,
+                                    phase: randomNumFrom(0, 10)
+                                }
+                                break;
+                        }
+                    }
+                    function randomSidePos(length){
+                        return Math.ceil(Math.random() * length);
+                    }
+
+                    // Draw Ball
+                    function renderBalls(){
+                        Array.prototype.forEach.call(balls, function(b){
+                        if(!b.hasOwnProperty('type')){
+                            ctx.fillStyle = 'rgba('+ball_color.r+','+ball_color.g+','+ball_color.b+','+b.alpha+')';
+                            ctx.beginPath();
+                            ctx.arc(b.x, b.y, R, 0, Math.PI*2, true);
+                            ctx.closePath();
+                            ctx.fill();
+                        }
+                        });
+                    }
+
+                    // Update balls
+                    function updateBalls(){
+                        var new_balls = [];
+                        Array.prototype.forEach.call(balls, function(b){
+                            b.x += b.vx;
+                            b.y += b.vy;
+                            
+                            if(b.x > -(50) && b.x < (can_w+50) && b.y > -(50) && b.y < (can_h+50)){
+                            new_balls.push(b);
+                            }
+                            
+                            // alpha change
+                            b.phase += alpha_f;
+                            b.alpha = Math.abs(Math.cos(b.phase));
+                            // console.log(b.alpha);
+                        });
+                        
+                        balls = new_balls.slice(0);
+                    }
+
+                    // loop alpha
+                    function loopAlphaInf(){
+                        
+                    }
+
+                    // Draw lines
+                    function renderLines(){
+                        var fraction, alpha;
+                        for (var i = 0; i < balls.length; i++) {
+                            for (var j = i + 1; j < balls.length; j++) {
+                            
+                            fraction = getDisOf(balls[i], balls[j]) / dis_limit;
+                                
+                            if(fraction < 1){
+                                alpha = (1 - fraction).toString();
+
+                                ctx.strokeStyle = 'rgba(150,150,150,'+alpha+')';
+                                ctx.lineWidth = link_line_width;
+                                
+                                ctx.beginPath();
+                                ctx.moveTo(balls[i].x, balls[i].y);
+                                ctx.lineTo(balls[j].x, balls[j].y);
+                                ctx.stroke();
+                                ctx.closePath();
+                            }
+                            }
+                        }
+                    }
+
+                    // calculate distance between two points
+                    function getDisOf(b1, b2){
+                        var  delta_x = Math.abs(b1.x - b2.x),
+                        delta_y = Math.abs(b1.y - b2.y);
+                        
+                        return Math.sqrt(delta_x*delta_x + delta_y*delta_y);
+                    }
+
+                    // add balls if there a little balls
+                    function addBallIfy(){
+                        if(balls.length < 20){
+                            balls.push(getRandomBall());
+                        }
+                    }
+
+                    // Render
+                    function render(){
+                        ctx.clearRect(0, 0, can_w, can_h);
+                        
+                        renderBalls();
+                        
+                        renderLines();
+                        
+                        updateBalls();
+                        
+                        addBallIfy();
+                        
+                        window.requestAnimationFrame(render);
+                    }
+
+                    // Init Balls
+                    function initBalls(num){
+                        for(var i = 1; i <= num; i++){
+                            balls.push({
+                                x: randomSidePos(can_w),
+                                y: randomSidePos(can_h),
+                                vx: getRandomSpeed('top')[0],
+                                vy: getRandomSpeed('top')[1],
+                                r: R,
+                                alpha: 1,
+                                phase: randomNumFrom(0, 10)
+                            });
+                        }
+                    }
+                    // Init Canvas
+                    function initCanvas(){
+                        canvas.setAttribute('width', window.innerWidth);
+                        canvas.setAttribute('height', window.innerHeight);
+                        
+                        can_w = parseInt(canvas.getAttribute('width'));
+                        can_h = parseInt(canvas.getAttribute('height'));
+                    }
+                    window.addEventListener('resize', function(e){
+                        console.log('Window Resize...');
+                        initCanvas();
+                    });
+
+                    function goMovie(){
+                        initCanvas();
+                        initBalls(30);
+                        window.requestAnimationFrame(render);
+                    }
+                    goMovie();
+
+                    // Mouse effect
+                    canvas.addEventListener('mouseenter', function(){
+                        console.log('mouseenter');
+                        mouse_in = true;
+                        balls.push(mouse_ball);
+                    });
+                    canvas.addEventListener('mouseleave', function(){
+                        console.log('mouseleave');
+                        mouse_in = false;
+                        var new_balls = [];
+                        Array.prototype.forEach.call(balls, function(b){
+                            if(!b.hasOwnProperty('type')){
+                                new_balls.push(b);
+                            }
+                        });
+                        balls = new_balls.slice(0);
+                    });
+                    canvas.addEventListener('mousemove', function(e){
+                        var e = e || window.event;
+                        mouse_ball.x = e.pageX;
+                        mouse_ball.y = e.pageY;
+                        // console.log(mouse_ball);
+                    });
+                },
+                posts(pram){
+                    axios.post('https://api.huo-dun.com:9768/' + pram.url,JSON.stringify(pram.data),{
+                        headers:{
+                            'Content-Type': 'application/json',
+                            'Authorization':localStorage.getItem('token') ? localStorage.getItem('token') : '',
+                            'userAgent': navigator.userAgent,
+                            'deviceId': '123' || parseInt(Math.random() * 1000),
+                            'language':localStorage.getItem('language') === 'zh-CN' ? localStorage.getItem('language').split('-')[1] : "EN"
+                        }
+                    }).then((response)=>{
+                        if(response.status == 200){ 
+                            if (response.data.status == 40101 || response.data.status == 401) { //  token过期或错误
+                                this.toast(_vm.$t('form.sign.expire'));
+                            }else{
+                                pram.success(response); 
+                            }
+                        }
+                    }).catch((error)=>{ 
+                        console.log(error);
+                    });
+                },
+                getUrl(){
+                    let that = this;
+                    if(!that.loading){
+                        that.loading = true;
+                        that.posts({
+                            url: 'api/me/app/config',
+                            data: {noNeedCode:true},
+                            success(response){
+                                if(response.data.status == 200){
+                                    that.loading = false;
+                                    that.iosUrl = response.data.data.iosUrl;
+                                    that.androidUrl = response.data.data.androidUrl;
+                                    that.iosVersion = response.data.data.iosVersion;
+                                    that.androidVersion = response.data.data.androidVersion;
+                                    that.checkBrowser();
+                                }
+                            }
+                        });
+                    }
+                },
+                checkBrowser(){
+                    let that = this;
+                    let u = navigator.userAgent;
+                    let wx = that.isWeixin();
+                    if(u.indexOf('iPhone') > -1){ // apple mobile 
+                        if(that.isPC()){
+                            that.isIOS = false;
+                        }else{
+                            // that.isIOS = true;
+                        }
+                    }else if(u.indexOf('Android') > -1 || u.indexOf('Linux') > -1){ // Android mobile
+                        that.isIOS = false;
+                    }
+                    if(wx){ // 微信浏览器
+                        that.show = true;
+                        return;
+                    }
+                },
+                downloadApp(type){ // 下载APP
+                    if(type === 'ios'){
+                        window.location.href = this.iosUrl;
+                    }else{
+                        window.location.href = this.androidUrl;
+                    }
+                },
+                isWeixin(){
+                    var ua = window.navigator.userAgent.toLowerCase();
+                    if (ua.match(/MicroMessenger/i) == 'micromessenger') {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                },
+                isPC() {
+                    var userAgentInfo = navigator.userAgent;
+                    var Agents = ["Android", "iPhone","SymbianOS", "Windows Phone","iPad", "iPod"];
+                    var flag = true; // PC端
+                    for (var v = 0; v < Agents.length; v++) {
+                        if (userAgentInfo.indexOf(Agents[v]) > 0) {
+                            flag = false; // 移动端
+                            break;
+                        }
+                    }
+                    return flag;
+                }
+            }
+        });
+    </script>
+</body>
+</html>

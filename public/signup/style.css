@@ -1,0 +1,495 @@
+@charset "UTF-8";
+body {
+  font: 14px/1.5 "Heiti SC", "Helvetica", "HelveticaNeue", "Droidsansfallback", "Droid Sans", "PingFang SC", Arial, "Helvetica Neue", "Lantinghei SC", "Microsoft YaHei", "HanHei SC", "Open Sans", "Hiragino Sans GB", "微软雅黑", STHeiti, "WenQuanYi Micro Hei", SimSun, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.download {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.download .logo img {
+  width: 100%;
+  display: block;
+  margin-top: 15vh;
+}
+
+.download .mark {
+  font-size: 6.6667vw;
+  line-height: 9.3333vw;
+  color: #333;
+  margin: 6vw 0 8vw;
+}
+
+.download .information {
+  font-size: 3.2vw;
+  color: #333;
+  line-height: 4.4vw;
+  margin-bottom: 15vw;
+}
+
+.download .buttonWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 84vw;
+  height: 11.7333vw;
+  border-radius: 7.3333vw;
+  background: #333;
+  color: #fff;
+  font-size: 4vw;
+  font-weight: 500;
+  margin-bottom: 10vw;
+}
+
+.download .buttonWrapper .button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50%;
+}
+
+.download .buttonWrapper .button img {
+  width: 4.4vw;
+  margin-right: 2vw;
+}
+
+.download .noIOS {
+  margin-top: 8vw;
+  font-size: 4vw;
+  color: #333;
+}
+
+.overlay {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.overlay img {
+  width: 60vw;
+  float: right;
+  margin-top: 5vw;
+  margin-right: 8vw;
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.iconweixz:before {
+  content: "\e695";
+}
+
+.iconxuanzhong:before {
+  content: "\e696";
+}
+
+.flexContent {
+  overflow: hidden;
+}
+
+.van-field {
+  background-color: #F7F7F7;
+}
+
+.sendSms {
+  color: #1D6C72;
+}
+
+.switch {
+  line-height: 10vw;
+  align-self: flex-end;
+  margin-right: 5vw;
+  font-weight: 600;
+}
+
+.logo {
+  display: block;
+  width: 40vw;
+  margin: auto;
+  padding-right: 8vw;
+}
+
+.signType {
+  margin-top: -10vw;
+}
+
+canvas {
+  background-color: #F7F7F7;
+  position: absolute;
+  top: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+}
+
+.signWrapper .signTitle ul {
+  padding: 0 4vw;
+  display: flex;
+  align-items: center;
+  line-height: 9.3333vw;
+}
+
+.signWrapper .signTitle ul li {
+  font-size: 4vw;
+  color: #666;
+  font-weight: 500;
+  line-height: 9.3333vw;
+  margin-right: 4vw;
+}
+
+.signWrapper .signTitle ul li.router-link-active {
+  font-size: 6.6667vw;
+  color: #424242;
+}
+
+.signWrapper .signHead {
+  padding: 0 4vw;
+}
+
+.signWrapper .signHead > h3 {
+  font-size: 6.6667vw;
+  color: #424242;
+  line-height: 9.3333vw;
+}
+
+.signWrapper .signHead .smsToast {
+  font-size: 3.2vw;
+  color: #69747E;
+  margin-top: 2.6667vw;
+  line-height: 4.4vw;
+}
+
+.signWrapper .signType {
+  padding: 6vw 6vw 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.signWrapper .signType span {
+  font-size: 5vw;
+  color: #CCCCCC;
+  margin-right: 5vw;
+  display: flex;
+  align-items: center;
+}
+
+.signWrapper .signType span i {
+  color: #333;
+  font-size: 4vw;
+  margin-right: 2vw;
+}
+
+.signWrapper .signType .title-active {
+  color: #333;
+}
+
+.signWrapper .signForm {
+  padding: 6.6667vw 6vw 0;
+}
+
+.signWrapper .signForm.kyc {
+  padding-top: 4vw;
+}
+
+.signWrapper .signForm.pt3 {
+  padding-top: 3vw;
+}
+
+.signWrapper .signForm .van-hairline--top-bottom::after {
+  border: none;
+}
+
+.signWrapper .signForm .van-tabs__nav {
+  border: none;
+}
+
+.signWrapper .signForm .cellGroup.lastCell {
+  margin-bottom: 8vw;
+}
+
+.signWrapper .signForm .cellGroup .title {
+  color: #999;
+  font-size: 3.2vw;
+  line-height: 4.4vw;
+}
+
+.signWrapper .signForm .cellGroup .inputBox {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #E6E6E6;
+  margin-bottom: 5.3333vw;
+}
+
+.signWrapper .signForm .cellGroup .inputBox .areaCode {
+  display: inline-block;
+  width: 15%;
+  color: #333;
+  height: 6vw;
+  line-height: 6vw;
+  border-radius: 1.0677vw;
+  font-weight: 500;
+  font-size: 3.7333vw;
+}
+
+.signWrapper .signForm .cellGroup .inputBox .areaCode i {
+  font-size: 3.7333vw;
+  margin-left: 1vw;
+  color: #333;
+}
+
+.signWrapper .signForm .smsBox {
+  margin-bottom: 8vw;
+}
+
+.signWrapper .signForm .smsBox > input {
+  border: none;
+  border-radius: none;
+  width: 12vw;
+  border-bottom: 1px solid #D9D9D9;
+  margin-right: 4vw;
+  text-align: center;
+}
+
+.signWrapper .signForm .smsBox > input:last-child {
+  margin-right: 0;
+}
+
+.signWrapper .signForm .van-cell::after {
+  border: none;
+}
+
+.signWrapper .signForm .edit {
+  border-bottom: 1px solid #EDEDED;
+  color: #333;
+  font-size: 4vw;
+  font-weight: 500;
+  padding-left: 0;
+}
+
+.signWrapper .signForm .danger {
+  margin-top: 2vw;
+  font-size: 3.2vw;
+  color: #f44;
+}
+
+.signWrapper .signForm .btnBox {
+  margin-bottom: 2.6667vw;
+  margin-top: 8vw;
+}
+
+.signWrapper .signForm .btnBox.fixed {
+  position: fixed;
+  left: 4vw;
+  right: 4vw;
+  bottom: 4vw;
+  margin-bottom: 0;
+  z-index: 5;
+}
+
+.signWrapper .signForm .btnBox .van-button {
+  height: 12vw;
+  border-radius: 6vw;
+  background: linear-gradient(to right, #A0BFC2, #B0D7D9);
+  color: #fff;
+  font-size: 4.5vw;
+  line-height: normal;
+}
+
+.signWrapper .signForm .btnBox .van-button.active {
+  background: linear-gradient(to right, #1F7076, #46A7AD);
+  color: #fff;
+}
+
+.signWrapper .signForm .btnBox .van-button--default {
+  border: none;
+}
+
+.signWrapper .signForm .btnBox .van-button--large {
+  line-height: normal;
+}
+
+.signWrapper .signForm > p {
+  font-size: 3.2vw;
+}
+
+.signWrapper .signForm > p.signin, .signWrapper .signForm > p.signup {
+  color: #333;
+}
+
+.signWrapper .signForm > p .forgetPsw {
+  color: #999;
+}
+
+.signWrapper .signForm .rules {
+  height: 4.4vw;
+  font-size: 3.2vw;
+  color: #666;
+  margin-bottom: 2.6667vw;
+  display: flex;
+  align-items: center;
+  margin-top: -4vw;
+}
+
+.signWrapper .signForm .rules i {
+  font-size: 3.2vw;
+  margin-right: 1.3333vw;
+}
+
+.signWrapper .signForm .van-cell-group .van-cell {
+  padding: 5.3333vw 0;
+  line-height: 5.3333vw;
+  font-size: 3.7333vw;
+  border-bottom: 1px solid #E6E6E6;
+}
+
+.signWrapper .signForm .van-cell-group .van-cell .van-cell__title {
+  color: #333;
+}
+
+.signWrapper .signForm .van-cell-group .van-cell .van-cell__title span {
+  display: block;
+  height: 24px;
+  line-height: 26px;
+}
+
+.signWrapper .signForm .van-cell-group .van-cell .van-cell__value {
+  color: #666;
+}
+
+.signWrapper .signForm .van-cell-group .van-cell .van-cell__value span {
+  display: block;
+  height: 24px;
+  line-height: 26px;
+}
+
+.signWrapper .signForm .van-cell-group .van-cell::after {
+  border: none;
+}
+
+.signWrapper .signForm .documentBox {
+  display: flex;
+}
+
+.signWrapper .signForm .documentBox li {
+  min-width: 18.6667vw;
+  height: 7.7333vw;
+  line-height: 7.7333vw;
+  text-align: center;
+  background: #F7F7F7;
+  font-size: 3.2vw;
+  color: #999;
+  margin-right: 2.6667vw;
+  font-weight: 500;
+}
+
+.signWrapper .signForm .documentBox li.active {
+  color: #333;
+}
+
+.signWrapper .signForm .picBox {
+  margin-top: 7.2vw;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.signWrapper .signForm .picBox .uploadBox {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.signWrapper .signForm .picBox .uploadBox.toast {
+  width: 44%;
+  padding: 0 3%;
+}
+
+.signWrapper .signForm .picBox .uploadBox.toast p {
+  margin-bottom: 1vw;
+  word-break: break-all;
+}
+
+.signWrapper .signForm .picBox .uploadBox p {
+  line-height: 4.4vw;
+  font-size: 3.2vw;
+  color: #999;
+  margin-bottom: 2.1333vw;
+}
+
+.signWrapper .signForm .picBox .uploadBox .van-uploader {
+  width: 44.6667vw;
+  height: 30.6667vw;
+  border-radius: 2.4vw;
+  margin-bottom: 5.3333vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.signWrapper .signForm .picBox .uploadBox .van-uploader img {
+  width: 100%;
+  display: block;
+}
+
+.signWrapper .signForm > .toast {
+  font-size: 3.2vw;
+  color: #999;
+  text-align: left;
+  word-break: break-all;
+  padding: 2vw;
+}
+
+.signWrapper .kycStatus {
+  padding: 5.3333vw 4vw 0;
+}
+
+.signWrapper .kycStatus h3 {
+  font-size: 4.8vw;
+  color: #333;
+  line-height: 6.6667vw;
+  margin-bottom: 2.6667vw;
+  margin-left: -2vw;
+}
+
+.signWrapper .kycStatus p {
+  font-size: 3.2vw;
+  color: #616973;
+  line-height: 4.4vw;
+}
+
+.signWrapper .kycStatus .btnBox {
+  margin-top: 8vw;
+}
+
+.signWrapper .kycStatus .btnBox .van-button {
+  height: 11.7333vw;
+  border-radius: 1.0667vw;
+  background: #337EFD;
+  color: #fff;
+  font-size: 3.7333vw;
+  line-height: normal;
+}
+
+.signWrapper .kycStatus .btnBox .van-button--default {
+  border: none;
+}
+
+.signWrapper .kycStatus .btnBox .van-button--large {
+  line-height: normal;
+}

@@ -1,0 +1,10 @@
+.bottom-widgetbar-content.backtesting .button, .header-chart-panel .button, .hotlist-controls .button, .symbol-edit-widget .button{background: #f30;}
+.button.properties svg{fill:#ffffff;}
+.feature-no-touch .header-chart-panel .button:hover, .feature-no-touch .symbol-edit-widget .button:hover{}
+
+.chart-page .chart-container{border:0;}
+
+.chart-page{background: #000;}
+.chart-page .chart-container{background: #000;}
+
+.loading-indicator{background: #000;}
