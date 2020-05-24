@@ -204,7 +204,7 @@
         mounted() {
             this.timeOut = setTimeout(()=>{
                 this.initCanvas();
-            },400)
+            },700)
         },
         methods: {
             clickHandle(levelId, index, type) {

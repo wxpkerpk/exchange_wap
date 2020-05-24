@@ -15,6 +15,7 @@
     </div>
 </template>  
 
+
 <script>  
     import backbar from '@/views/modules/back.vue'
     export default {
@@ -45,7 +46,7 @@
             getChase(){
                 let that = this;
                 that.$mts.posts({
-                    url:'api/activity/labsApply/labsApply?status='+that.status,
+                    url:'api/activity/labsApply/query?status='+that.status,
                     data:{},
                     success(response){
                         if(response.data.status == 200){

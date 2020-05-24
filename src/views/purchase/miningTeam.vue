@@ -14,6 +14,7 @@
                         <dd>10</dd>
                     </dl>
                     <dl>
+
                         <dt>{{$t('purchase.onlineMining')}}</dt>
                         <dd>1999</dd>
                     </dl>

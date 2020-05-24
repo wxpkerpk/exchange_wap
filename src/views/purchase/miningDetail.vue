@@ -14,6 +14,7 @@
                         <dd>10.002053</dd>
                     </dl>
                     <dl>
+
                         <dt>{{$t('purchase.nowPower')+'(Du/h)'}}</dt>
                         <dd class="orange">0.00000</dd>
                     </dl>

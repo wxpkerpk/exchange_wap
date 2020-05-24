@@ -31,6 +31,7 @@
                             限价交易
                             <!-- <van-icon name="arrow-down" /> -->
                         </div>
+
                         <div class="calc">
                             <number v-model="form.price" :placeholder="$t('trade.inputPrice')" :min="minPrice || 0 " :max="maxPrice" :step="step(priceScale)" :fixed="priceScale" />
                             <div class="equal">{{$mkt.vMoney(form.price)}}</div>
@@ -396,12 +397,12 @@
             }
         },
         beforeRouteLeave (to, from, next) {
-            this.$mts.initPage();
+            // this.$mts.initPage();
             this.$mts.close();
             next();
         },
         beforeDestrory(){
-            this.$mts.initPage();
+            // this.$mts.initPage();
             this.$mts.close();
         },
         activated() {

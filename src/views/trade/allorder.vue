@@ -27,6 +27,7 @@
                         </div>
                         <span v-if="checked && list.length > 0" @click="cancelOrder">{{$t('trade.cancelAll')}}</span>
                     </div>
+
                     <div class="tradeNow">
                         <nodata v-if="!list || list.length == 0" />   
                         <ul v-else>

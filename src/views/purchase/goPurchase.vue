@@ -21,10 +21,11 @@
                     <div class="calcBox">
                         <span @click="reduce"><i class="iconfont iconjianhao"/></span>
                         <div class="inputBox">
-                            <input :placeholder="$t('validate.purchase.t1')" type="number" v-model="form.number" @input="onInput">
+                            <input :placeholder="$t('validate.purchase.t1')" type="number" v-model="form.number" >
                         </div>
                         <span @click="add"><i class="iconfont iconaddto" /></span>
                     </div>
+
                     <!-- <div class="switch flexLevel">
                         <div class="prizeSale" v-for="(item,index) in coinList" :key="index">{{$t('purchase.prizeAccount',{total: ' '+vPrize+' '+item.coinCode})}}<span>{{' '+useable+' '+item.coinCode}}</span></div>
                         <van-switch v-model="checked" size="16px" inactive-color="#666" active-color="#FFAD00" v-if="theme" />
@@ -212,7 +213,7 @@
             getChase(){
                 let that = this;
                 that.$mts.posts({
-                    url:'api/activity/labsApply/labsApply?status='+that.status,
+                    url:'api/activity/labsApply/query?status='+that.status,
                     data:{},
                     success(response){
                         if(response.data.status == 200){
@@ -325,6 +326,8 @@
                                     that.$mts.toast(that.$t('endNotice.purchase.fundPswError'));
                                 }else if(response.data.status == 601){
                                     that.$mts.toast(that.$t('endNotice.purchase.noRemind'));
+                                }else if(response.data.status == 901){
+                                    that.$mts.toast("超过额度限制或者重复认购");
                                 }
                             }
                         });

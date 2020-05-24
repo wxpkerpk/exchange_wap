@@ -231,15 +231,19 @@
             }
         },
         beforeRouteLeave (to, from, next) {
+            
             let that = this;
+
             // 登陆后禁止从首页直接进入登录页
             if (this.isLogin) {
                 if (to.name === 'signin') return;
             }
             clearInterval(that.interval);
-            that.showHex = 0;
             clearTimeout(this.timeOut);
+            that.showHex = 0;
+
             next();
+
         },
         beforeDestory(){
         },
@@ -277,7 +281,7 @@
                     that.notice();
                     that.showHex = 1;
 
-                },480)
+                },780)
 
 
                 // that.CheckShareId();
@@ -600,7 +604,7 @@
             position: relative;
             background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
             background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
+            animation: gradientBG 10s ease infinite;
             margin: 0 4vw;
             margin-top: 2vw;
             display: flex;

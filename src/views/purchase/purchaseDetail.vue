@@ -19,7 +19,8 @@
                                     stroke-width="12px"
                                 />
                                 <span>{{percent+'%'}}</span>
-                            </div> 
+                            </div>
+
                             <div class="time">
                                 <span>{{vStatus}}</span>
                                 <van-count-down :time="time" :format="$t('message.purchase.time')" class="countdown" v-if="vStatus == $t('purchase.activityAndTime')"/>
@@ -34,14 +35,7 @@
                                 <span v-if="item.type !== 'point'">{{ item.coinCode }}</span>
                             </dd>
                         </dl>
-                        <dl>
-                            <dt>最大可买</dt>
-                            <dd>
-                                <span v-if="item.type !== 'point'">{{$mkt.fmtZero((item.totalNumber - item.remindNumber), item.scale) + ' '}}</span>
-                                <span v-else>2</span>
-                                <span v-if="item.type !== 'point'">{{ item.coinCode }}</span>
-                            </dd>
-                        </dl>
+                       
                         <dl>
                             <dt>{{$t('purchase.totalRounds')}}</dt>
                             <dd>
@@ -178,7 +172,7 @@
                 let that = this;
                 that.coinId = that.$route.params.id;
                 that.$mts.posts({
-                    url:'api/activity/labsApply/labsApply?status='+that.status,
+                    url:'api/activity/labsApply/query?status='+that.status,
                     data:{},
                     success(response){
                         if(response.data.status == 200){

@@ -22,6 +22,7 @@
                                             <div class="toast">{{vIntroduction($mkt.vCnField(item,'introduction'))}}</div>
                                             <div class="detail">
                                                 <dl>
+
                                                     <dt v-if="item.type !== 'point'">{{$t('purchase.totalRounds')+'('+item.coinCode+')'}}</dt>
                                                     <dt v-else>认购重量</dt>
                                                     <dd>{{$mkt.fmtZero(item.totalNumber,item.scale)}}</dd>
@@ -170,7 +171,7 @@
                 if(!that.submiting){
                     that.submiting = true;
                     that.$mts.posts({
-                        url:'api/activity/labsApply/labsApply?status='+that.status,
+                        url:'api/activity/labsApply/query?status='+that.status,
                         data:{},
                         success(response){
                             // todo  逻辑待完善

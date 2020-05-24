@@ -160,7 +160,7 @@
                 this.initCanvas();
                 this.initClickCanvas();
                 this.showHex = 1;
-            }, 400)
+            }, 700)
             this.getMyNode();
             this.getInfo();
             this.getNodeList();

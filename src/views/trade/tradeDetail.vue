@@ -36,6 +36,7 @@
                             <dt>{{'24H '+$t('table.volume')}}</dt>
                             <dd>{{$mkt.fmtZero(item.vol, amountScale)}}</dd>
                         </dl>
+
                     </div>
                 </div>
                 <div class="changeTime">
@@ -285,12 +286,12 @@
         components:{
         },
         beforeRouteLeave (to, from, next) {
-            this.$mts.initPage();
+            // this.$mts.initPage();
             this.$mts.close();
             next();
         },
         beforeDestrory(){
-            this.$mts.initPage();
+            // this.$mts.initPage();
             this.$mts.close();
         },
         mounted(){
@@ -515,9 +516,9 @@
                 this.kline = klinecharts.init(document.getElementById('tradeView'),config);
                 //成交量指标
                 this.kline.addTechnicalIndicator('VOL',90);
-                this.kline.setOffsetRightSpace(65);
+                this.kline.setOffsetRightSpace(60);
                 //蜡烛大小
-                this.kline.setDataSpace(8);
+                this.kline.setDataSpace(6);
                 //mac线
                 this.kline.setTechnicalIndicatorParams("MA",[5,10,30]);
             },
