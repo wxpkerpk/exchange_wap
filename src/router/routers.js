@@ -667,7 +667,7 @@ const router = [
             title: '交易',
             titleEn: 'Trade',
             index: 1,
-            keepAlive: false
+            keepAlive: true
         },
         component: (resolve) => require(['@/views/trade/index.vue'], resolve)
     },
